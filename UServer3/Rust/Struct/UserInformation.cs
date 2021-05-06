@@ -11,6 +11,7 @@ namespace UServer3.Rust.Struct
     {
         public Byte PacketProtocol;
         public UInt64 SteamID;
+        public UInt64 SteamIDFromServer;
         public UInt32 ConnectionProtocol;
         public String OS;
         public String Username;
@@ -44,6 +45,8 @@ namespace UServer3.Rust.Struct
 
         public void Write(global::Network.BaseNetwork peer)
         {
+            SteamIDFromServer = SteamID;
+            
             peer.write.UInt8(PacketProtocol);
             peer.write.UInt64(SteamID);
             peer.write.UInt32(ConnectionProtocol);
@@ -55,6 +58,8 @@ namespace UServer3.Rust.Struct
 
         public void WriteFake(global::Network.BaseNetwork peer, ulong fakeSteamID, string fakeUsername)
         {
+            SteamIDFromServer = fakeSteamID;
+            
             peer.write.UInt8(PacketProtocol);
             peer.write.UInt64(fakeSteamID);
             peer.write.UInt32(ConnectionProtocol);

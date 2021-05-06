@@ -59,6 +59,7 @@ namespace UServer3.Rust.Network
 
         #endregion
 
+        #region [Class] NetServerHandler
         class NetServerHandler : IServerCallback
         {
             public void OnNetworkMessage(Message message) => Instance.OUT_OnNetworkMessage(message);
@@ -69,12 +70,17 @@ namespace UServer3.Rust.Network
                 return false;
             }
         }
+        #endregion
+
+        #region [Class] NetClientHandler
 
         class NetClientHandler : IClientCallback
         {
             public void OnNetworkMessage(Message message) => Instance.IN_OnNetworkMessage(message);
             public void OnClientDisconnected(string reason) => Instance.IN_OnDisconnected(reason);
         }
+
+        #endregion
         
         #region [Method] [Example] InitializationNetwork
 
@@ -118,8 +124,8 @@ namespace UServer3.Rust.Network
                 if (BaseServer.connections.Count <= 1)
                 {
                     ConsoleSystem.Log($"[VirtualServer]: Есть новое подключение [{BaseServer.connections[0].ipaddress}]");
-                    ConsoleSystem.Log($"[VirtualServer]: Подключаемся к игровому серверу [{Settings.TargetServer_IP}:{Settings.TargetServer_Port}]");
-                    if (BaseClient.Connect(Settings.TargetServer_IP, Settings.TargetServer_Port))
+                    ConsoleSystem.Log($"[VirtualServer]: Подключаемся к игровому серверу [{Settings.FileSettings.ConnectionIP}:{Settings.FileSettings.ConnectionPort}]");
+                    if (BaseClient.Connect(Settings.FileSettings.ConnectionIP, Settings.FileSettings.ConnectionPort))
                     {
                         ConsoleSystem.Log("[VirtualServer]: Инициализация подключения успешно завершена!");
                     }
@@ -185,7 +191,6 @@ namespace UServer3.Rust.Network
                     return;
                 case Message.Type.GiveUserInformation:
                     ConnectionInformation = UserInformation.ParsePacket(packet);
-                    GameWer.AuthSteamID(ConnectionInformation.SteamID);
                     this.OnNewConnection(packet.connection);
                     break;
                 default:
@@ -220,9 +225,18 @@ namespace UServer3.Rust.Network
                     if (BaseClient.write.Start())
                     {
                         BaseClient.write.PacketID(Message.Type.GiveUserInformation);
-                        ConnectionInformation.Write(BaseClient);
+                        if (Settings.FileSettings.FakeSteamID == 0)
+                        {
+                            ConnectionInformation.Write(BaseClient);
+                        }
+                        else
+                        {
+                            ConnectionInformation.WriteFake(BaseClient, Settings.FileSettings.FakeSteamID, Settings.FileSettings.FakeUsername);
+                        }
+
                         BaseClient.write.Send(new SendInfo());
                     }
+                    GameWer.AuthSteamID(ConnectionInformation.SteamIDFromServer);
                     break;
                 case Message.Type.Entities:
                     packet.read.UInt32();

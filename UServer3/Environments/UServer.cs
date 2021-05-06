@@ -18,18 +18,7 @@ namespace UServer3.Environments
             ConsoleSystem.OutputPath = Bootstrap.OutputPath;
             ConsoleSystem.Log("[Bootstrap]: Приложение запущено");
 
-            try
-            {
-                string[] content = File.ReadAllText("./connect.txt").Split(':');
-                Settings.TargetServer_IP = content[0];
-                Settings.TargetServer_Port = Int32.Parse(content[1]);
-            }
-            catch (Exception ex)
-            {
-                ConsoleSystem.LogError("Ошибка чтения connect.txt, там должен быть адрес сервера и порт в формате IP:Port");
-                return;
-            }
-
+            Settings.Init();
             DatabaseLoader.Load<Database>();
             RPCManager.Initialize();
             this.AddType<VirtualServer>();

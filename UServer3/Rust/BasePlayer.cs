@@ -48,7 +48,9 @@ namespace UServer3.Rust
         {
             base.OnEntityCreate(entity);
             ListPlayers.Add(this);
-            if (SteamID == VirtualServer.ConnectionInformation.SteamID)
+            
+            SteamID = entity.basePlayer.userid;
+            if (SteamID == VirtualServer.ConnectionInformation.SteamIDFromServer)
             {
                 LocalPlayer = this;
             }
@@ -58,7 +60,7 @@ namespace UServer3.Rust
         {
             base.OnEntityDestroy();
             ListPlayers.Remove(this);
-            if (SteamID == VirtualServer.ConnectionInformation.SteamID)
+            if (SteamID == VirtualServer.ConnectionInformation.SteamIDFromServer)
             {
                 LocalPlayer = this;
             }
@@ -71,20 +73,23 @@ namespace UServer3.Rust
             if (LocalPlayer == this)
             {
                 SetPlayerFlag(E_PlayerFlags.IsAdmin, true);
+
+                entity.basePlayer.playerFlags = (Int32) PlayerFlags;
+                entity.basePlayer.userid = VirtualServer.ConnectionInformation.SteamID;
+
+                if (VirtualServer.BaseServer.write.Start())
+                {
+                    VirtualServer.BaseServer.write.PacketID(Message.Type.Entities);
+                    VirtualServer.BaseServer.write.UInt32(VirtualServer.TakeEntityNUM);
+                    entity.WriteToStream(VirtualServer.BaseServer.write);
+                    VirtualServer.BaseServer.write.Send(new SendInfo(VirtualServer.BaseServer.connections[0]));
+                }
+
+                entity.Dispose();
+                return true;
             }
 
-            entity.basePlayer.playerFlags = (Int32)PlayerFlags;
-            
-            if (VirtualServer.BaseServer.write.Start())
-            {
-                VirtualServer.BaseServer.write.PacketID(Message.Type.Entities);
-                VirtualServer.BaseServer.write.UInt32(VirtualServer.TakeEntityNUM);
-                entity.WriteToStream(VirtualServer.BaseServer.write);
-                VirtualServer.BaseServer.write.Send(new SendInfo(VirtualServer.BaseServer.connections[0]));
-            }
-            
-            entity.Dispose();
-            return true;
+            return false;
         }
 
         public override void OnEntityUpdate(Entity entity)
@@ -164,7 +169,7 @@ namespace UServer3.Rust
         private PlayerTick previousRecievedTick = new PlayerTick();
         private bool lastFlying = false;
 
-//        private int spend = 0;
+
         public bool OnTick(Message packet)
         {
             using (PlayerTick playerTick = PlayerTick.Deserialize(packet.read, previousRecievedTick, true))
@@ -172,13 +177,7 @@ namespace UServer3.Rust
                 previousRecievedTick = playerTick.Copy();
                 ViewAngles = playerTick.inputState.aimAngles;
                 EyePos = playerTick.eyePos;
-//                spend++;
-//                if (spend < 8)
-//                {
-//                    return true;
-//                }
-//                spend = 0;
-                
+
                 if (IsServerAdmin) return false;
                 if (playerTick.modelState.flying)
                 {

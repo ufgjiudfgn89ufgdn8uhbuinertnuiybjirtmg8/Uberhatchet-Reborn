@@ -20,7 +20,13 @@ namespace UServer3.Rust
                 State = (LifeState) entity.baseCombat.state;
             }
         }
-        
+
+        public override void OnEntityUpdate(Entity entity)
+        {
+            base.OnEntityUpdate(entity);
+            this.Health = entity.baseCombat.health;
+        }
+
         public enum LifeState
         {
             Alive,

@@ -49,6 +49,9 @@
       <HintPath>..\Reference\Facepunch.System.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\..\..\..\..\Documents\GitHub\Uberhatchet-Reborn\Reference\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="Rust.Data, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\Reference\Rust.Data.dll</HintPath>
       <Private>False</Private>
@@ -340,6 +343,7 @@
     <Compile Include="Rust\Data\ERPCNetworkType.cs" />
     <Compile Include="Rust\Data\E_PlayerFlags.cs" />
     <Compile Include="Rust\Data\OpCodes.cs" />
+    <Compile Include="Rust\Functions\BackupSteamID.cs" />
     <Compile Include="Rust\Functions\WallHack.cs" />
     <Compile Include="Rust\Network\DDraw.cs" />
     <Compile Include="Rust\Network\EntityManager.cs" />
