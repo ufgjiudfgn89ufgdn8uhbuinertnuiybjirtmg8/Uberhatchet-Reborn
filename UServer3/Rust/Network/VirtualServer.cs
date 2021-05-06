@@ -287,6 +287,7 @@ namespace UServer3.Rust.Network
                     if (BaseServer.write.Start())
                     {
                         BaseServer.write.PacketID(Message.Type.Approved);
+                        approval.steamid = ConnectionInformation.SteamID;
                         Approval.Serialize(BaseServer.write, approval);
                         BaseServer.write.Send(new SendInfo(BaseServer.connections[0]));
                     }
