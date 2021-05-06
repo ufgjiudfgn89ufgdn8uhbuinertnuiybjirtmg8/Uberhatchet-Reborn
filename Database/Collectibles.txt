@@ -1,0 +1,10 @@
+3334224657  // stone/sulfur-collectable.prefab
+1640696133  // stone/metal-collectable.prefab
+1349997351  // stone/stone-collectable.prefab
+2734840477  // stone/wood-collectable.prefab
+
+3278044659  // hemp/hemp-collectable.prefab
+3703356906  // mushrooms/mushroom-cluster-5.prefab
+1151199945  // mushrooms/mushroom-cluster-6.prefab
+273829985   // pumpkin/pumpkin-collectable.prefab
+2337337587  // corn/corn-collectable.prefab
