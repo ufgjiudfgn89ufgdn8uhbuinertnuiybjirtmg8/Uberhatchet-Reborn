@@ -3,14 +3,13 @@ using System.IO;
 using SapphireEngine;
 using UServer3.CSharp.Reflection;
 using UServer3.Rust.Data;
-using UServer3.Rust.Functions;
 using UServer3.Rust.Network;
-using UServer3.Rust.Functions;
 
 namespace UServer3.Environments
 {
-    public class UServer : SapphireType
+    internal class UServer : SapphireType
     {
+        
         public static void Initialization() => Framework.Initialization<UServer>();
         
         public override void OnAwake()
@@ -23,8 +22,7 @@ namespace UServer3.Environments
             RPCManager.Initialize();
             this.AddType<VirtualServer>();
             this.AddType<NetworkManager>();
-            
-            this.AddType<WallHack>();
+            this.AddType<PluginManager>();
         }
     }
 }

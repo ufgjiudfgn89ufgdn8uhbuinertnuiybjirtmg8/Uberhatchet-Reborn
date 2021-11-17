@@ -225,34 +225,36 @@ namespace UServer3.Rust.Network
                     if (BaseClient.write.Start())
                     {
                         BaseClient.write.PacketID(Message.Type.GiveUserInformation);
-                        if (Settings.FileSettings.FakeSteamID == 0)
-                        {
-                            ConnectionInformation.Write(BaseClient);
-                        }
-                        else
-                        {
-                            ConnectionInformation.WriteFake(BaseClient, Settings.FileSettings.FakeSteamID, Settings.FileSettings.FakeUsername);
-                        }
-
+                        
+                        ConnectionInformation.Write(BaseClient);
+                        
                         BaseClient.write.Send(new SendInfo());
                     }
                     GameWer.AuthSteamID(ConnectionInformation.SteamIDFromServer);
                     break;
                 case Message.Type.Entities:
                     packet.read.UInt32();
-                    using (Entity entity = Entity.Deserialize(packet.read))
+                    try
                     {
-                        if (EntityManager.OnEntity(entity) == false)
+                        using (Entity entity = Entity.Deserialize(packet.read))
                         {
-                            if (BaseServer.write.Start())
+                            if (EntityManager.OnEntity(entity) == false)
                             {
-                                BaseServer.write.PacketID(Message.Type.Entities);
-                                BaseServer.write.UInt32(TakeEntityNUM);
-                                entity.WriteToStream(BaseServer.write);
-                                BaseServer.write.Send(new SendInfo(BaseServer.connections[0]));
+                                if (BaseServer.write.Start())
+                                {
+                                    BaseServer.write.PacketID(Message.Type.Entities);
+                                    BaseServer.write.UInt32(TakeEntityNUM);
+                                    entity.WriteToStream(BaseServer.write);
+                                    BaseServer.write.Send(new SendInfo(BaseServer.connections[0]));
+                                }
                             }
                         }
                     }
+                    catch (Exception e)
+                    {
+                        ConsoleSystem.LogError("Exception from VirualServer.OnEntities: " + e);
+                    }
+
                     break;
                 case Message.Type.EntityDestroy:
                     EntityManager.OnEntityDestroy(packet);

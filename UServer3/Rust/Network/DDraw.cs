@@ -8,27 +8,27 @@ namespace UServer3.Rust.Network
 {
     public class DDraw
     {
-        internal static string Line(Vector3 from, Vector3 to, Color color, float duration)
+        public static string Line(Vector3 from, Vector3 to, Color color, float duration)
         {
             return SendClientCommand("ddraw.line", duration.ToString().Replace(',', '.'), color, ToCSharpString(from), ToCSharpString(to));
         }
 
-        internal static string Arrow(Vector3 from, Vector3 to, float headSize, Color color, float duration)
+        public static string Arrow(Vector3 from, Vector3 to, float headSize, Color color, float duration)
         {
             return SendClientCommand("ddraw.arrow", duration.ToString().Replace(',', '.'), color, ToCSharpString(from), ToCSharpString(to), headSize);
         }
 
-        internal static string Sphere(Vector3 pos, float radius, Color color, float duration)
+        public static string Sphere(Vector3 pos, float radius, Color color, float duration)
         {
             return SendClientCommand("ddraw.sphere", duration.ToString().Replace(',', '.'), color, ToCSharpString(pos), radius);
         }
 
-        internal static string Text(Vector3 pos, string text, Color color, float duration)
+        public static string Text(Vector3 pos, string text, Color color, float duration)
         {
             return SendClientCommand("ddraw.text", duration.ToString().Replace(',', '.'), color, ToCSharpString(pos), text);
         }
 
-        internal static string Box(Vector3 pos, float size, Color color, float duration)
+        public static string Box(Vector3 pos, float size, Color color, float duration)
         {
             return SendClientCommand("ddraw.box", duration.ToString().Replace(',', '.'), color, ToCSharpString(pos), size);
         }
@@ -149,12 +149,12 @@ namespace UServer3.Rust.Network
             return ("\"" + str + "\"");
         }
         
-        internal static string ToCSharpString(Vector3 pos)
+        public static string ToCSharpString(Vector3 pos)
         {
             return pos.x.ToString().Replace(',', '.') + " " + pos.y.ToString().Replace(',', '.') + " " + pos.z.ToString().Replace(',', '.');
         }
         
-        internal static string ToCSharpString(float val)
+        public static string ToCSharpString(float val)
         {
             return val.ToString().Replace(',', '.');
         }

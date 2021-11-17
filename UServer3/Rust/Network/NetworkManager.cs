@@ -2,6 +2,7 @@
 using Network;
 using SapphireEngine;
 using UServer3.CSharp.Reflection;
+using UServer3.Environments;
 using UServer3.Rust;
 using UServer3.Rust.Data;
 using UServer3.Rust.Struct;
@@ -16,43 +17,60 @@ namespace UServer3.Rust.Network
 
         public bool IN_NetworkMessage(Message message)
         {
+            bool returnResult = false;
             switch (message.type)
             {
                 case Message.Type.RPCMessage:
-                    return OnRPCMessage(ERPCNetworkType.IN, message);
-                    break;
-                case Message.Type.ConsoleCommand:
-                    return OnConsoleCommand(message);
+                    bool resultRPC = OnRPCMessage(ERPCNetworkType.IN, message);
+                    if (resultRPC == true)
+                    {
+                        returnResult = resultRPC;
+                    }
                     break;
             }
-            return false;
+
+            bool resultHook = PluginManager.Instance.CallHook("IN_NetworkMessage", new object[] {message}, true);
+            if (resultHook == true)
+            {
+                returnResult = resultHook;
+            }
+            
+            return returnResult;
         }
 
         public bool Out_NetworkMessage(Message message)
         {
+            bool returnResult = false;
+            
             switch (message.type)
             {
                 case Message.Type.Tick:
+                    bool resultT = false;
                     if (BasePlayer.IsHaveLocalPlayer)
-                        return BasePlayer.LocalPlayer.OnTick(message);
-                    else return false;
+                    {
+                        resultT = BasePlayer.LocalPlayer.OnTick(message);
+                    }
+                    if (resultT == true)
+                    {
+                        returnResult = resultT;
+                    }
                     break;
                 case Message.Type.RPCMessage:
-                    return OnRPCMessage(ERPCNetworkType.OUT, message);
+                    bool resultR = OnRPCMessage(ERPCNetworkType.OUT, message);
+                    if (resultR == true)
+                    {
+                        returnResult = resultR;
+                    }
                     break;
             }
-            return false;
-        }
 
-        static bool OnConsoleCommand(Message message)
-        {
-            string command = message.read.String();
-            if (command.Contains("noclip") == true || command.Contains("debugcamera") || command.Contains("camspeed"))
+            bool resultHook = PluginManager.Instance.CallHook("Out_NetworkMessage", new object[] {message});
+            if (resultHook == true)
             {
-                return true;
+                returnResult = resultHook;
             }
-
-            return false;
+            
+            return returnResult;
         }
 
         private static bool OnRPCMessage(ERPCNetworkType type, Message message)
@@ -61,6 +79,7 @@ namespace UServer3.Rust.Network
             UInt32 rpcId = message.read.UInt32();
             if (type == ERPCNetworkType.IN)
                 message.read.UInt64();
+            
             return RPCManager.RunRPCMethod(UID, (ERPCMethodUID) rpcId, type, message);
         }
 

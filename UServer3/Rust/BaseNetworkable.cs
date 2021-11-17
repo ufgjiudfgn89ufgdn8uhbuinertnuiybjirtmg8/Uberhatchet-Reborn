@@ -12,6 +12,7 @@ namespace UServer3.Rust
         public static bool HasNetworkable(UInt32 uid) => ListNetworkables.ContainsKey(uid);
         public static BaseNetworkable Get(UInt32 uid) => ListNetworkables.TryGetValue(uid, out BaseNetworkable entity) ? entity : null;
         public static T Get<T>(UInt32 uid) where T : BaseNetworkable => Get(uid) as T;
+        public static T Get<T>(Entity entity) where T : BaseNetworkable => Get(entity.baseNetworkable.uid) as T;
         public static void Destroy(UInt32 uid) => Get(uid)?.OnEntityDestroy();
 
         public UInt32 UID;
@@ -22,6 +23,7 @@ namespace UServer3.Rust
         {
             ListNetworkables[entity.baseNetworkable.uid] = this;
             OnEntityUpdate(entity);
+            
         }
 
         public virtual void OnEntityUpdate(Entity entity)

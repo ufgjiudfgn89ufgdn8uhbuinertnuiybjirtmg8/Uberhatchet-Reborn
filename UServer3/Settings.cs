@@ -61,11 +61,5 @@ namespace UServer3
 
         [JsonProperty("ConnectionPort")]
         public Int32 ConnectionPort { get; set; } = 20900;
-
-        [JsonProperty("FakeSteamID")]
-        public UInt64 FakeSteamID { get; set; }
-
-        [JsonProperty("FakeUsername")]
-        public String FakeUsername { get; set; } = "";
     }
 }
