@@ -25,6 +25,11 @@ namespace UServer3.Rust
         {
             base.OnEntityUpdate(entity);
             this.Health = entity.baseCombat.health;
+            
+            if (entity.baseCombat != null)
+            {
+                this.State = (LifeState) entity.baseCombat.state;
+            }
         }
 
         public enum LifeState

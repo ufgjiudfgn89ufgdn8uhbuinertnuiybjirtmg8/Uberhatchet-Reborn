@@ -160,6 +160,8 @@ namespace UServer3.Rust.Data
             [EPrefabUID.SMG] = 0.8f,
             [EPrefabUID.AK47] = 1,
             [EPrefabUID.Bolt] = 1.75f,
+            [EPrefabUID.L96] = 1.75f,
+            [EPrefabUID.M39] = 1.75f,
         };
         #endregion
         
@@ -167,19 +169,20 @@ namespace UServer3.Rust.Data
         private static Dictionary<Int32, Single> ListProjectileInitialDistance = new Dictionary<Int32, Single>()
         {
             [0] = 0,
-            [2115555558] = 0,  // ammo.handmade.shell
-            [-533875561] = 15, // ammo.pistol
-            [1621541165] = 15, // ammo.pistol.fire
-            [-422893115] = 15, // ammo.pistol.hv
-            [815896488] = 15,  // ammo.rifle
-            [805088543] = 15,  // ammo.rifle.explosive
-            [449771810] = 15,  // ammo.rifle.incendiary
-            [1152393492] = 15, // ammo.rifle.hv
-            [-1035059994] = 3, // ammo.shotgun
-            [1819281075] = 10, // ammo.shotgun.slug
-            [-1280058093] = 0, // arrow.hv
-            [-420273765] = 0,  // arrow.wooden
-            [590532217] = 0,   // ammo.nailgun.nails
+            [588596902] = 0,  // ammo.handmade.shell
+            [785728077] = 15, // ammo.pistol
+            [51984655] = 15, // ammo.pistol.fire
+            [-1691396643] = 15, // ammo.pistol.hv
+            [-1211166256] = 15,  // ammo.rifle
+            [-1321651331] = 15,  // ammo.rifle.explosive
+            [605467368] = 15,  // ammo.rifle.incendiary
+            [1712070256] = 15, // ammo.rifle.hv
+            [-1685290200] = 3, // ammo.shotgun
+            [-1036635990] = 3, // ammo.shotgun.fire
+            [-727717969] = 10, // ammo.shotgun.slug
+            [-1023065463] = 0, // arrow.hv
+            [-1234735557] = 0,  // arrow.wooden
+            [-2097376851] = 0,   // ammo.nailgun.nails
         };
         #endregion
 
@@ -187,19 +190,20 @@ namespace UServer3.Rust.Data
         private static Dictionary<Int32, Single> ListMaxVelocity = new Dictionary<Int32, Single>()
         {
             [0] = 25,
-            [2115555558] = 120,  // ammo.handmade.shell
-            [-533875561] = 300,  // ammo.pistol
-            [1621541165] = 225,  // ammo.pistol.fire
-            [-422893115] = 400,  // ammo.pistol.hv
-            [815896488] = 375,   // ammo.rifle
-            [805088543] = 225,   // ammo.rifle.explosive
-            [449771810] = 225,   // ammo.rifle.incendiary
-            [1152393492] = 450,  // ammo.rifle.hv
-            [-1035059994] = 245, // ammo.shotgun
-            [1819281075] = 225,  // ammo.shotgun.slug
-            [-1280058093] = 80,  // arrow.hv
-            [-420273765] = 50,   // arrow.wooden
-            [590532217] = 50,    // ammo.nailgun.nails
+            [588596902] = 120,  // ammo.handmade.shell
+            [785728077] = 300,  // ammo.pistol
+            [51984655] = 225,  // ammo.pistol.fire
+            [-1691396643] = 400,  // ammo.pistol.hv
+            [-1211166256] = 375,   // ammo.rifle
+            [-1321651331] = 225,   // ammo.rifle.explosive
+            [605467368] = 225,   // ammo.rifle.incendiary
+            [1712070256] = 450,  // ammo.rifle.hv
+            [-1685290200] = 245, // ammo.shotgun
+            [-1036635990] = 245, // ammo.shotgun.fire
+            [-727717969] = 225,  // ammo.shotgun.slug
+            [-1023065463] = 80,  // arrow.hv
+            [-1234735557] = 50,   // arrow.wooden
+            [-2097376851] = 50,    // ammo.nailgun.nails
         };
         #endregion
 
@@ -224,8 +228,7 @@ namespace UServer3.Rust.Data
         private static List<EHumanBone> ListHumanBones = new List<EHumanBone>()
         {
             EHumanBone.Head,
-            EHumanBone.Body,
-            EHumanBone.Legs
+            EHumanBone.Body
         };
         #endregion
         
@@ -235,8 +238,8 @@ namespace UServer3.Rust.Data
             {
                 EHumanBone.Head, new HitInfo
                 {
-                    HitBone = 3198432,
-                    HitPartID = 1744899316,
+                    HitBone = (uint)EHumanBone.Head,
+                    HitPartID = 0,//1744899316,
                     HitLocalPos = new Vector3(-0.1f, -0.1f, 0.0f),
                     HitNormalPos = new Vector3(0.0f, -1.0f, 0.0f)
                 }
@@ -244,19 +247,10 @@ namespace UServer3.Rust.Data
             {
                 EHumanBone.Body, new HitInfo
                 {
-                    HitBone = 1036806628,
-                    HitPartID = 1890214305,
+                    HitBone = (uint)EHumanBone.Body,
+                    HitPartID = 0,//1890214305,
                     HitLocalPos = new Vector3(0.0f, 0.2f, 0.1f),
                     HitNormalPos = new Vector3(0.7f, -0.3f, 0.7f)
-                }
-            },
-            {
-                EHumanBone.Legs, new HitInfo
-                {
-                    HitBone = 3354754288,
-                    HitPartID = 1541911865,
-                    HitLocalPos = new Vector3(-0.2f, 0.1f, 0.0f),
-                    HitNormalPos = new Vector3(-0.1f, 0.0f, 1.0f)
                 }
             }
         };

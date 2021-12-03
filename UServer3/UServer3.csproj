@@ -11,7 +11,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>UServer3</RootNamespace>
     <AssemblyName>UServer3</AssemblyName>
-    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion> 
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -389,11 +389,32 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Plugins\AimAssist.cs">
+      <Link>Plugins\AimAssist.cs</Link>
+    </Compile>
     <Compile Include="..\Plugins\AnyTimeIsDay.cs">
       <Link>Plugins\AnyTimeIsDay.cs</Link>
     </Compile>
+    <Compile Include="..\Plugins\AutoDoorSubmit.cs">
+      <Link>Plugins\AutoDoorSubmit.cs</Link>
+    </Compile>
+    <Compile Include="..\Plugins\AutoMeleAttack.cs">
+      <Link>Plugins\AutoMeleAttack.cs</Link>
+    </Compile>
     <Compile Include="..\Plugins\ESP.cs">
       <Link>Plugins\ESP.cs</Link>
+    </Compile>
+    <Compile Include="..\Plugins\AntiFallDamage.cs">
+      <Link>Plugins\AntiFallDamage.cs</Link>
+    </Compile>
+    <Compile Include="..\Plugins\FastFriendHelp.cs">
+      <Link>Plugins\FastFriendHelp.cs</Link>
+    </Compile>
+    <Compile Include="..\Plugins\FastMedical.cs">
+      <Link>Plugins\FastMedical.cs</Link>
+    </Compile>
+    <Compile Include="..\Plugins\HideOrShowConsole.cs">
+      <Link>Plugins\HideOrShowConsole.cs</Link>
     </Compile>
     <Compile Include="..\Plugins\SetAdminAccess.cs">
       <Link>Plugins\SetAdminAccess.cs</Link>
@@ -421,6 +442,7 @@
     <Compile Include="Rust\BaseResource.cs" />
     <Compile Include="Rust\CollectibleEntity.cs" />
     <Compile Include="Rust\Data\Database.cs" />
+    <Compile Include="Rust\Data\EEntitySignal.cs" />
     <Compile Include="Rust\Data\EHumanBone.cs" />
     <Compile Include="Rust\Data\EPrefabUID.cs" />
     <Compile Include="Rust\Data\ERPCMethodUID.cs" />

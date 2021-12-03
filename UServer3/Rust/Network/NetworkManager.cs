@@ -29,7 +29,7 @@ namespace UServer3.Rust.Network
                     break;
             }
 
-            bool resultHook = PluginManager.Instance.CallHook("IN_NetworkMessage", new object[] {message}, true);
+            bool resultHook = PluginManager.Instance.CallHook_In_NetworkMessage(message);
             if (resultHook == true)
             {
                 returnResult = resultHook;
@@ -64,7 +64,7 @@ namespace UServer3.Rust.Network
                     break;
             }
 
-            bool resultHook = PluginManager.Instance.CallHook("Out_NetworkMessage", new object[] {message});
+            bool resultHook = PluginManager.Instance.CallHook_Out_NetworkMessage(message);
             if (resultHook == true)
             {
                 returnResult = resultHook;

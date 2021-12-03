@@ -159,7 +159,7 @@ namespace UServer3.Rust
                 ViewAngles = playerTick.inputState.aimAngles;
                 EyePos = playerTick.eyePos;
 
-                PluginManager.Instance.CallHook("OnPlayerTick", new object[] {playerTick, previousRecievedTick});
+                PluginManager.Instance.CallHook_OnPlayerTick(playerTick, previousRecievedTick);
 
                 if (VirtualServer.BaseClient.write.Start())
                 {

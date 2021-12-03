@@ -18,6 +18,8 @@ namespace UServer3.Environments
             ConsoleSystem.Log("[Bootstrap]: Приложение запущено");
 
             Settings.Init();
+            StringPool.Init();
+            
             DatabaseLoader.Load<Database>();
             RPCManager.Initialize();
             this.AddType<VirtualServer>();

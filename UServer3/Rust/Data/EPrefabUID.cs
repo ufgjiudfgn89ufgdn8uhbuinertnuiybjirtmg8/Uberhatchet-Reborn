@@ -7,13 +7,10 @@ namespace UServer3.Rust.Data
         BasePlayer      = 4108440852, // Префаб игрока
 
         OreBonus        = 2931121794, // Светящаяся фентифлюшка
-
-        MedicalSyringe  = 1981287283, // Шприц
-
         // Melee Weapons
         WoodenSpear     = 2828546575,  // Деревянное копьё
         StoneSpear      = 1943636975, // Каменное копьё
-        Machete         = 482511471,  // Мачете
+        Machete         = 2942508801,  // Мачете
         LongSword       = 3395979968, // Одноручный меч
         SalvagedSword   = 1663991785,  // Двуручный меч
         SalvagedCleaver = 3340056040,  // Двуручное лезвие
@@ -40,7 +37,7 @@ namespace UServer3.Rust.Data
         LR300           = 844375121, // LR300
         Bolt            = 1665481300, // Болтовка
         AK47            = 1978739833, // Калаш
-        SemiRifle       = 77503872,   // Берданка
+        SemiRifle       = 563371667,   // Берданка
         Pyton           = 3305012504,  // Питон
         Revolver        = 2477536592, // Револьвер
         MP5             = 2545523575, // MP5

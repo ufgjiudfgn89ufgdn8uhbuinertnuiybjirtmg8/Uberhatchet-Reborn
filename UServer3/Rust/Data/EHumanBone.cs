@@ -4,8 +4,8 @@ namespace UServer3.Rust.Data
 {
     public enum EHumanBone : UInt32
     {
-        Head = 3198432,
-        Body = 1036806628,
-        Legs = 3354754288
+        Head = 698017942,
+        Jaw = 2822582055,
+        Body = 827230707
     }
 }

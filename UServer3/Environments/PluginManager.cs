@@ -16,7 +16,7 @@ namespace UServer3.Environments
     {
         public static PluginManager Instance { get; private set; }
         public static Dictionary<string, IPlugin> ListLoadedPlugins = new Dictionary<string, IPlugin>();
-        
+
         public FileSystemWatcher Watcher { get; private set; }
 
         public override void OnAwake()
@@ -47,7 +47,7 @@ namespace UServer3.Environments
 
             ConsoleSystem.Log("[PluginManager]: Start...");
         }
-        
+
         public void OnFileCreated(object source, FileSystemEventArgs e)
         {
             this.OnFileCreated(e.Name, e.FullPath);
@@ -68,6 +68,7 @@ namespace UServer3.Environments
                 {
                     ConsoleSystem.LogError($"Exception from [{name}] plugin in Loaded method: " + ex);
                 }
+
                 ConsoleSystem.Log($"Plugin [{name}] has been Loaded!");
             }
             catch (Exception e)
@@ -91,16 +92,18 @@ namespace UServer3.Environments
                 {
                     plug.Unloaded();
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     ConsoleSystem.LogError($"Exception from [{name}] plugin in Unloaded method: " + ex);
                 }
+
                 ConsoleSystem.Log($"Plugin [{name}] has been Unloaded!");
             }
-            
+
             try
             {
                 IPlugin plugin = CSScript.Evaluator.LoadCode<IPlugin>(File.ReadAllText(path));
+
                 ListLoadedPlugins[name] = plugin;
                 try
                 {
@@ -110,13 +113,19 @@ namespace UServer3.Environments
                 {
                     ConsoleSystem.LogError($"Exception from [{name}] plugin in Loaded method: " + ex);
                 }
+
                 ConsoleSystem.Log($"Plugin [{name}] has been Loaded!");
             }
             catch (Exception e)
             {
-                ConsoleSystem.LogError($"Exception from [{name}] plugin, this plugin is not loaded: " + e);
+                try
+                {
+                    ConsoleSystem.LogError($"Exception from [{name}] plugin, this plugin is not loaded: " + e);
+                }
+                catch
+                {
+                }
             }
-            
         }
 
         public void OnFileDeleted(object source, FileSystemEventArgs e)
@@ -134,11 +143,138 @@ namespace UServer3.Environments
                 {
                     plug.Unloaded();
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     ConsoleSystem.LogError($"Exception from [{name}] plugin in Unloaded method: " + ex);
                 }
+
                 ConsoleSystem.Log($"Plugin [{name}] has been Unloaded!");
+            }
+        }
+
+        public bool CallHook_Out_NetworkMessage(Message message)
+        {
+            bool returnResult = false;
+            foreach (var pluginKeyPair in ListLoadedPlugins)
+            {
+                try
+                {
+                    bool result = pluginKeyPair.Value.Out_NetworkMessage(message);
+                    if (result == true)
+                    {
+                        returnResult = true;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ConsoleSystem.LogError($"Exception from CallHook(Out_NetworkMessage) in [{pluginKeyPair.Key}] plugin: " + ex);
+                }
+            }
+
+            return returnResult;
+        }
+
+        public bool CallHook_In_NetworkMessage(Message message)
+        {
+            bool returnResult = false;
+            foreach (var pluginKeyPair in ListLoadedPlugins)
+            {
+                try
+                {
+                    bool result = pluginKeyPair.Value.In_NetworkMessage(message);
+                    if (result == true)
+                    {
+                        returnResult = true;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ConsoleSystem.LogError($"Exception from CallHook(In_NetworkMessage) in [{pluginKeyPair.Key}] plugin: " + ex);
+                }
+            }
+
+            return returnResult;
+        }
+
+        public void CallHook_OnPacketEntityCreate(Entity entity)
+        {
+            foreach (var pluginKeyPair in ListLoadedPlugins)
+            {
+                try
+                {
+                    pluginKeyPair.Value.OnPacketEntityCreate(entity);
+                }
+                catch (Exception ex)
+                {
+                    ConsoleSystem.LogError($"Exception from CallHook(OnPacketEntityCreate) in [{pluginKeyPair.Key}] plugin: " + ex);
+                }
+            }
+        }
+
+        public bool CallHook_OnPacketEntityUpdate(Entity entity)
+        {
+            bool returnResult = false;
+            foreach (var pluginKeyPair in ListLoadedPlugins)
+            {
+                try
+                {
+                    bool result = pluginKeyPair.Value.OnPacketEntityUpdate(entity);
+                    if (result == true)
+                    {
+                        returnResult = true;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ConsoleSystem.LogError($"Exception from CallHook(OnPacketEntityUpdate) in [{pluginKeyPair.Key}] plugin: " + ex);
+                }
+            }
+
+            return returnResult;
+        }
+
+        public void CallHook_OnPacketEntityPosition(uint uid, Vector3 position, Vector3 rotation)
+        {
+            foreach (var pluginKeyPair in ListLoadedPlugins)
+            {
+                try
+                {
+                    pluginKeyPair.Value.OnPacketEntityPosition(uid, position, rotation);
+                }
+                catch (Exception ex)
+                {
+                    ConsoleSystem.LogError($"Exception from CallHook(OnPacketEntityPosition) in [{pluginKeyPair.Key}] plugin: " + ex);
+                }
+            }
+        }
+
+        public void CallHook_OnPacketEntityDestroy(uint uid)
+        {
+            foreach (var pluginKeyPair in ListLoadedPlugins)
+            {
+                try
+                {
+                    pluginKeyPair.Value.OnPacketEntityDestroy(uid);
+                }
+                catch (Exception ex)
+                {
+                    ConsoleSystem.LogError($"Exception from CallHook(OnPacketEntityDestroy) in [{pluginKeyPair.Key}] plugin: " + ex);
+                }
+            }
+        }
+
+        public void CallHook_OnPlayerTick(PlayerTick tick, PlayerTick tickDelay)
+        {
+            foreach (var pluginKeyPair in ListLoadedPlugins)
+            {
+                try
+                {
+                    pluginKeyPair.Value.OnPlayerTick(tick, tickDelay);
+                }
+                catch (Exception ex)
+                {
+                    ConsoleSystem.LogError($"Exception from CallHook(Out_NetworkMessage) in [{pluginKeyPair.Key}] plugin: " + ex);
+                }
             }
         }
 
@@ -151,40 +287,16 @@ namespace UServer3.Environments
                 {
                     message.read._position = 1;
                 }
+
                 if (args.Length > 2 && args[2] is Message rpcMessage && dropMessagePosition == true)
                 {
                     rpcMessage.read._position = 1;
                 }
+
                 try
                 {
-                    bool result = false;
-                    switch (name)
-                    {
-                        case "Out_NetworkMessage":
-                            result = pluginKeyPair.Value.Out_NetworkMessage(args[0] as Message);
-                            break;
-                        case "In_NetworkMessage":
-                            result = pluginKeyPair.Value.In_NetworkMessage(args[0] as Message);
-                            break;
-                        case "OnPacketEntityCreate":
-                            pluginKeyPair.Value.OnPacketEntityCreate(args[0] as Entity);
-                            break;
-                        case "OnPacketEntityUpdate":
-                            result = pluginKeyPair.Value.OnPacketEntityUpdate(args[0] as Entity);
-                            break;
-                        case "OnPacketEntityPosition":
-                            pluginKeyPair.Value.OnPacketEntityPosition((uint)args[0], (Vector3)args[1], (Vector3)args[2]);
-                            break;
-                        case "OnPacketEntityDestroy":
-                            pluginKeyPair.Value.OnPacketEntityDestroy((uint)args[0]);
-                            break;
-                        case "OnPlayerTick":
-                            pluginKeyPair.Value.OnPlayerTick((PlayerTick)args[0], (PlayerTick)args[1]);
-                            break;
-                        default:
-                            result = pluginKeyPair.Value.CallHook(name, args);
-                            break;
-                    }
+                    bool result = pluginKeyPair.Value.CallHook(name, args);
+
                     if (result == true)
                     {
                         returnResult = result;

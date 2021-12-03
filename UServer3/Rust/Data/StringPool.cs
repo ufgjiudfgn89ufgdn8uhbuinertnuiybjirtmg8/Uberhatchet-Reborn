@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using SapphireEngine;
 
 namespace UServer3.Rust.Data
 {
@@ -19,7 +20,7 @@ namespace UServer3.Rust.Data
                     if (stringPoolText[i].Length > 0)
                     {
                         string key = stringPoolText[i].Split('=')[0];
-                        string value = stringPoolText[i].Substring(0, key.Length + 1);
+                        string value = stringPoolText[i].Substring(key.Length + 1);
                         uint hash = 0;
                         if (UInt32.TryParse(key, out hash))
                         {
@@ -27,6 +28,11 @@ namespace UServer3.Rust.Data
                         }
                     }
                 }
+                ConsoleSystem.Log("[StringPool] Loaded " + HashToString.Count + " lines");
+            }
+            else
+            {
+                ConsoleSystem.LogError("[StringPoll] File is not found!");
             }
         }
 

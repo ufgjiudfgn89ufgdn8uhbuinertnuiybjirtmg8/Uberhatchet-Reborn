@@ -24,7 +24,7 @@ namespace UServer3.Rust.Rust
                 {
                     returnResult2 = result2;
                 }
-                bool resultUpdate2 = PluginManager.Instance.CallHook("OnPacketEntityUpdate", new object[] {entity});
+                bool resultUpdate2 = PluginManager.Instance.CallHook_OnPacketEntityUpdate(entity);
                 if (resultUpdate2 == true)
                 {
                     returnResult2 = resultUpdate2;
@@ -78,7 +78,7 @@ namespace UServer3.Rust.Rust
 
 
             ent.OnEntityCreate(entity);
-            PluginManager.Instance.CallHook("OnPacketEntityCreate", new object[] {entity});
+            PluginManager.Instance.CallHook_OnPacketEntityCreate(entity);
             bool returnResult = false;
             bool result = ent.OnEntity(entity);
             if (result == true)
@@ -86,7 +86,7 @@ namespace UServer3.Rust.Rust
                 returnResult = result;
             }
 
-            bool resultUpdate = PluginManager.Instance.CallHook("OnPacketEntityUpdate", new object[] {entity});
+            bool resultUpdate = PluginManager.Instance.CallHook_OnPacketEntityUpdate(entity);
             if (resultUpdate == true)
             {
                 returnResult = resultUpdate;
@@ -98,7 +98,7 @@ namespace UServer3.Rust.Rust
         public static void OnEntityDestroy(Message packet)
         {
             UInt32 uid = packet.read.EntityID();
-            PluginManager.Instance.CallHook("OnPacketEntityDestroy", new object[] {uid});
+            PluginManager.Instance.CallHook_OnPacketEntityDestroy(uid);
             BaseNetworkable.Destroy(uid);
         }
 
@@ -115,7 +115,7 @@ namespace UServer3.Rust.Rust
                     Vector3 rotation = packet.read.Vector3();
 
                     entity.OnPositionUpdate(position, rotation);
-                    PluginManager.Instance.CallHook("OnPacketEntityPosition", new object[] {num, position, rotation});
+                    PluginManager.Instance.CallHook_OnPacketEntityPosition(num, position, rotation);
                 }
             }
         }
